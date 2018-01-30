@@ -23,7 +23,7 @@ def getCurrentDownloadSpeed():
 
     cleanup()
 
-    writeOut(downloadSpeed)
+    writeSpeedResult(downloadSpeed)
 
     upload()
 
@@ -38,4 +38,5 @@ def cleanup():
     filename = fileLink.split('/')[-1]
     subprocess.run(['rm', filename])
 
-print(getCurrentDownloadSpeed())
+if __name__ == '__main__':
+    print(getCurrentDownloadSpeed())
