@@ -6,6 +6,14 @@ td, th {
     padding: 5px;
 }
 
+#ping_table {
+    float: right;
+}
+
+#speed_table {
+    float: left;
+}
+
 table {
     display: inline-block;
 }
