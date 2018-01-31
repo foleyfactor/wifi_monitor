@@ -1,5 +1,5 @@
 import subprocess
-from file_writer import writeOut
+from file_writer import writeSpeedResult
 from git_commit import upload
 
 fileLink = 'http://ipv4.download.thinkbroadband.com/10MB.zip'
