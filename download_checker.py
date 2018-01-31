@@ -2,7 +2,7 @@ import subprocess
 from file_writer import writeOut
 from git_commit import upload
 
-fileLink = 'http://ipv4.download.thinkbroadband.com/100MB.zip'
+fileLink = 'http://ipv4.download.thinkbroadband.com/10MB.zip'
 fileSize = fileLink.split('/')[-1]
 fileSize = int(fileSize[:fileSize.index('M')])
 magicRatio = 1

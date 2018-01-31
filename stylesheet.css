@@ -1,0 +1,19 @@
+table, td, th {
+    border: 1px solid black;
+}
+
+td, th {
+    padding: 5px;
+}
+
+table {
+    display: inline-block;
+}
+
+.warn {
+    background-color: yellow;
+}
+
+.critical {
+    background-color: red;
+}
