@@ -24,7 +24,7 @@ $(document).ready(() => {
 
     let x = new XMLHttpRequest();
     x.overrideMimeType('application/json');
-    x.open('GET', 'output.json', false);
+    x.open('GET', 'output.json?' + (new Date()).getTime(), false);
     x.send();
     let loadedJSON = JSON.parse(x.responseText);
 
