@@ -7,3 +7,4 @@ def upload():
         subprocess.run(['git', 'push', 'origin', 'master'], stdout=subprocess.DEVNULL)
     except:
         # oh well, we can try again next time
+        pass

@@ -1,5 +1,6 @@
 from download_checker import getCurrentDownloadSpeed
 from ping_checker import checkWifiStatus
+from git_commit import upload
 from time import sleep
 from datetime import datetime
 
@@ -11,6 +12,7 @@ def main():
             print("Current download speed is: " + str(currSpeed) + "!")
         res = checkWifiStatus()
         print("Hooray! The Wifi is up!" if res else "Boo! Hiss! No Wifi. :(")
+        upload()
         sleep(300)
         count = (count + 1) % 12
 

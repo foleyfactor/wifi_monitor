@@ -22,10 +22,7 @@ def getCurrentDownloadSpeed():
     downloadSpeed = (fileSize/seconds)*8*magicRatio
 
     cleanup()
-
     writeSpeedResult(downloadSpeed)
-
-    upload()
 
     return downloadSpeed
 
