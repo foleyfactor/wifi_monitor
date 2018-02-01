@@ -1,11 +1,14 @@
 import subprocess
 from file_writer import writeSpeedResult
 from git_commit import upload
+from twilio_alert import alert
 
 fileLink = 'http://ipv4.download.thinkbroadband.com/10MB.zip'
 fileSize = fileLink.split('/')[-1]
 fileSize = int(fileSize[:fileSize.index('M')])
 magicRatio = 1
+warnLevel = 10
+criticalLevel = 5
 
 def getCurrentDownloadSpeed():
     result = subprocess.run(['bash', '-c', 'time wget ' + fileLink,
@@ -23,8 +26,15 @@ def getCurrentDownloadSpeed():
 
     cleanup()
     writeSpeedResult(downloadSpeed)
+    checkForAlert(downloadSpeed)
 
     return downloadSpeed
+
+def checkForAlert(speed):
+    if speed <= criticalLevel:
+        return alert("Critical: download speed is at critical level. " + str(speed) + "Mb/s")
+    if speed <= warnLevel:
+        return alert("Warning: download speed is at warning level. " + str(speed) + "Mb/s")
 
 # parses a time of the form MMmSS.SSSs
 def parseTimeToSeconds(time):

@@ -22,6 +22,8 @@ $(document).ready(() => {
     $el_speed = $('#speed_data_body');
     $el_ping = $('#ping_data_body');
 
+    let cutoff = parseInt(((new Date()).getTime() - 24*60*60*1000) / 1000);
+
     let x = new XMLHttpRequest();
     x.overrideMimeType('application/json');
     x.open('GET', 'output.json?' + (new Date()).getTime(), false);
@@ -35,9 +37,11 @@ $(document).ready(() => {
     speedtimes.sort((a,b) => { return b-a; });
     pingtimes.sort((a,b) => { return b-a; });
     for (el of speedtimes) {
+        if (el <= cutoff) continue;
         $el_speed.append(getDataRow(prettifyDate(el), loadedJSON['speeds'][el + ''], warnDownloadSpeed, criticalDownloadSpeed));
     }
     for (el of pingtimes) {
+        if (el <= cutoff) continue;
         $el_ping.append(getDataRow(prettifyDate(el), loadedJSON['pings'][el + ''] == 1 ? "Up" : "Down", warnPing, criticalPing));
     }
 

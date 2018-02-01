@@ -9,6 +9,4 @@ I've created a quick and dirty script that pings the wifi every 5 min and does a
 ## TODO:
  * Make frontend nicer (maybe graph definitely add filter)
  * Wait for rpi to arrive then setup the cron job on rpi so that we get a good stream of data (and dont have a while True loop going)
- * Make things cleaner (stop using commits to upload data!!!)
  * E X T E N S I B I L I T Y
- * Add alerting so we're notified when the wifi is down or slow (in case we're out)
