@@ -5,8 +5,8 @@ user = None
 def getUser():
     global user
     if user is None:
-        d = dict(os.environ)
-        user = d['USER']
+        with open('/home/.user', 'r') as f:
+            user = f.readline().strip()
     return user
 
 if __name__ == "__main__":
