@@ -8,9 +8,9 @@ def writePingResult(val):
     writeResult('pings', val)
 
 def writeResult(field, val):
-    with open('/home/' + getUser() + '/output.json', 'r') as f:
+    with open('/home/' + getUser() + '/wifi_monitor/output.json', 'r') as f:
         j = eval("".join(f.readlines()))
         j[field][int(time.time())] = val
-    with open('/home/' + getUser() + '/output.json', 'w') as f:
+    with open('/home/' + getUser() + '/wifi_monitor/output.json', 'w') as f:
         f.truncate()
         f.write(json.dumps(j))
