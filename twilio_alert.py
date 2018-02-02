@@ -1,5 +1,6 @@
 from twilio.rest import Client
 from time import sleep
+import subprocess
 
 accountSid = None
 authToken = None
@@ -21,12 +22,23 @@ def setup():
 
     client = Client(accountSid, authToken)
 
+def acquireLock():
+    subprocess.run(['touch', 'alert.lock'])
+
+def releaseLock():
+    subprocess.run(['rm', 'alert.lock'])
+
 def alert(text):
     if client is None:
         setup()
 
-    for number in toPhoneNumbers:
-        alert_one(text, number)
+    if not isLocked():
+        acquireLock()
+
+        for number in toPhoneNumbers:
+            alert_one(text, number)
+
+        releaseLock()
 
 def alert_one(text, number):
     if client is None:
@@ -41,6 +53,11 @@ def alert_one(text, number):
         sleep(30)
         alert_one(text, number)
 
+def isLocked():
+    run = subprocess.run(['test', '-f', 'alert.lock'])
+    if run.returncode == 1:
+        return False
+    return True
 
 
 if __name__ == '__main__':
