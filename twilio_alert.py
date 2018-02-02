@@ -23,9 +23,11 @@ def setup():
     client = Client(accountSid, authToken)
 
 def acquireLock():
+    subprocess.run(['cd', '~/wifi_monitor'])
     subprocess.run(['touch', 'alert.lock'])
 
 def releaseLock():
+    subprocess.run(['cd', '~/wifi_monitor'])
     subprocess.run(['rm', 'alert.lock'])
 
 def alert(text):
@@ -54,6 +56,7 @@ def alert_one(text, number):
         alert_one(text, number)
 
 def isLocked():
+    subprocess.run(['cd', '~/wifi_monitor'])
     run = subprocess.run(['test', '-f', 'alert.lock'])
     if run.returncode == 1:
         return False
