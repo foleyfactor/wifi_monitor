@@ -7,9 +7,9 @@ def writePingResult(val):
     writeResult('pings', val)
 
 def writeResult(field, val):
-    with open('output.json', 'r') as f:
+    with open('/home/affoley/output.json', 'r') as f:
         j = eval("".join(f.readlines()))
         j[field][int(time.time())] = val
-    with open('output.json', 'w') as f:
+    with open('/home/affoley/output.json', 'w') as f:
         f.truncate()
         f.write(json.dumps(j))
