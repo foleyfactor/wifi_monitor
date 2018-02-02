@@ -24,3 +24,4 @@ def checkForAlert(val):
 
 if __name__ == '__main__':
     checkWifiStatus()
+    upload()

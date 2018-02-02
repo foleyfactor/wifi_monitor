@@ -48,4 +48,5 @@ def cleanup():
     subprocess.run(['rm', filename])
 
 if __name__ == '__main__':
-    print(getCurrentDownloadSpeed())
+    getCurrentDownloadSpeed()
+    upload()
