@@ -1,6 +1,6 @@
 from twilio.rest import Client
 from time import sleep
-import subprocess
+import subprocess, os
 
 accountSid = None
 authToken = None
@@ -12,22 +12,22 @@ client = None
 def setup():
     global accountSid, authToken, client, myPhoneNumber, toPhoneNumbers
 
-    with open('.twilio.tokens', 'r') as f:
+    with open('/home/affoley/wifi_monitor/.twilio.tokens', 'r') as f:
         accountSid = f.readline().strip()
         authToken = f.readline().strip()
         myPhoneNumber = f.readline().strip()
 
-    with open('.phone.numbers', 'r') as f:
+    with open('/home/affoley/wifi_monitor/.phone.numbers', 'r') as f:
         toPhoneNumbers = [i.split() for i in f.readlines()]
 
     client = Client(accountSid, authToken)
 
 def acquireLock():
-    subprocess.run(['cd', '~/wifi_monitor'])
+    os.chdir('/home/affoley/wifi_monitor')
     subprocess.run(['touch', 'alert.lock'])
 
 def releaseLock():
-    subprocess.run(['cd', '~/wifi_monitor'])
+    os.chdir('/home/affoley/wifi_monitor')
     subprocess.run(['rm', 'alert.lock'])
 
 def alert(text):
@@ -56,7 +56,7 @@ def alert_one(text, number):
         alert_one(text, number)
 
 def isLocked():
-    subprocess.run(['cd', '~/wifi_monitor'])
+    os.chdir('/home/affoley/wifi_monitor')
     run = subprocess.run(['test', '-f', 'alert.lock'])
     if run.returncode == 1:
         return False

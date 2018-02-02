@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, os
 from file_writer import writeSpeedResult
 from git_commit import upload
 from twilio_alert import alert
@@ -11,7 +11,7 @@ warnLevel = 10
 criticalLevel = 5
 
 def getCurrentDownloadSpeed():
-    subprocess.run(['cd', '~/wifi_monitor'])
+    os.chdir('/home/affoley/wifi_monitor/')
     result = subprocess.run(['bash', '-c', 'time wget ' + fileLink,
         '-U "Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-GB; rv:1.9.0.1) Gecko/2008070206 Firefox/3.0.1"',
         '--no-check-certificate'], stderr=subprocess.PIPE)
@@ -43,7 +43,7 @@ def parseTimeToSeconds(time):
     return float(rest[:rest.index('s')]) + int(mi) * 60
 
 def cleanup():
-    subprocess.run(['cd', '~/wifi_monitor'])
+    os.chdir('/home/affoley/wifi_monitor/')
     filename = fileLink.split('/')[-1]
     subprocess.run(['rm', filename])
 
