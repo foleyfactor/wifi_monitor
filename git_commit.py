@@ -1,4 +1,5 @@
 import subprocess, os
+from util import getUser
 
 def upload():
     try:
@@ -6,6 +7,6 @@ def upload():
         subprocess.run(['git', 'add', 'output.json'], stdout=subprocess.DEVNULL)
         subprocess.run(['git', 'commit', '-m', '"Another speed test"'], stdout=subprocess.DEVNULL)
         subprocess.run(['git', 'push', 'origin', 'master'], stdout=subprocess.DEVNULL)
-    except:
+    except Exception as e:
         # oh well, we can try again next time
         pass
