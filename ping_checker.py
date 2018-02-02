@@ -1,6 +1,7 @@
 import requests
 from file_writer import writePingResult
 from twilio_alert import alert
+from git_commit import upload
 
 testUrl = 'https://foleyfactor.github.io'
 failValue = 0
