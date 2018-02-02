@@ -8,8 +8,8 @@ fileLink = 'http://ipv4.download.thinkbroadband.com/10MB.zip'
 fileSize = fileLink.split('/')[-1]
 fileSize = int(fileSize[:fileSize.index('M')])
 magicRatio = 1
-warnLevel = 10
-criticalLevel = 5
+warnLevel = 5
+criticalLevel = 2
 
 def getCurrentDownloadSpeed():
     os.chdir('/home/' + getUser() + '/wifi_monitor/')

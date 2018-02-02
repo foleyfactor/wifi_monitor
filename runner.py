@@ -6,7 +6,7 @@ from datetime import datetime
 
 def main():
     count = 0
-    while datetime.now() < datetime(2018, 2, 1):
+    while True:
         if count == 0:
             currSpeed = getCurrentDownloadSpeed()
             print("Current download speed is: " + str(currSpeed) + "!")

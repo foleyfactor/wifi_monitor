@@ -13,8 +13,8 @@ function prettifyDate(d) {
     return mon + ' ' + day + ' - ' + hours + ':' + (min >= 10 ? min : '0' + min);
 }
 
-let warnDownloadSpeed = 10;
-let criticalDownloadSpeed = 5;
+let warnDownloadSpeed = 5;
+let criticalDownloadSpeed = 2;
 let warnPing = "Down";
 let criticalPing = "Down";
 
