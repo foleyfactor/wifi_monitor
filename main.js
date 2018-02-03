@@ -13,10 +13,32 @@ function prettifyDate(d) {
     return mon + ' ' + day + ' - ' + hours + ':' + (min >= 10 ? min : '0' + min);
 }
 
+function padZero(n) {
+    return (n < 10 && n >= 0 ? "0" : "") + n;
+}
+
 let warnDownloadSpeed = 5;
 let criticalDownloadSpeed = 2;
 let warnPing = "Down";
 let criticalPing = "Down";
+
+let downloadPlotLayout = {
+    title: 'Download Speeds',
+    xaxis: {
+        title: 'Time',
+    },
+    yaxis: {
+        title: 'Download Speed (Mb/s)',
+    },
+};
+
+let pingLayout = {
+    title: 'Connection Status',
+    annotations: [{
+        showarrow: false,
+        text: '',
+    }],
+};
 
 $(document).ready(() => {
     $el_speed = $('#speed_data_body');
@@ -30,6 +52,12 @@ $(document).ready(() => {
     x.send();
     let loadedJSON = JSON.parse(x.responseText);
 
+    let plotMe = {
+        x: [],
+        y: [],
+        type: 'scatter'
+    };
+
     let speedtimes = [];
     let pingtimes = [];
     for (key in loadedJSON['speeds']) speedtimes.push(parseInt(key));
@@ -39,11 +67,41 @@ $(document).ready(() => {
     for (el of speedtimes) {
         if (el <= cutoff) continue;
         $el_speed.append(getDataRow(prettifyDate(el), loadedJSON['speeds'][el + ''], warnDownloadSpeed, criticalDownloadSpeed));
+        let time = new Date(el*1000);
+        let strTime = time.getFullYear() + "-" + padZero(time.getMonth() + 1)  + "-" + padZero(time.getDate())+ " " + padZero(time.getHours()) + ":" + padZero(time.getMinutes())+ ":" + padZero(time.getSeconds());
+
+        plotMe.x.push(strTime);
+        plotMe.y.push(loadedJSON['speeds'][el + '']);
     }
+
+    let pass = 0;
+    let fail = 0;
+
     for (el of pingtimes) {
         if (el <= cutoff) continue;
         $el_ping.append(getDataRow(prettifyDate(el), loadedJSON['pings'][el + ''] == 1 ? "Up" : "Down", warnPing, criticalPing));
+        if (loadedJSON['pings'][el + '']) ++pass;
+        else ++fail;
     }
+
+    let pingPlot = {
+        values: [pass, fail],
+        labels: ["Up", "Down"],
+        hoverinfo: 'label+percent',
+        hole: 0.7,
+        type: 'pie',
+        marker: {
+            colors: ["rgb(7, 142, 20)", "rgb(191, 22, 53)"],
+        },
+    };
+
+
+    Plotly.newPlot('download_speeds', [plotMe], downloadPlotLayout);
+    Plotly.newPlot('pings', [pingPlot], pingLayout);
 
 });
 
+window.onresize = function () {
+    Plotly.Plots.resize('download_speeds');
+    Plotly.Plots.resize('pings');
+}

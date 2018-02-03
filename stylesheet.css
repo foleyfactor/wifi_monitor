@@ -12,6 +12,11 @@ td, th {
 
 #speed_table {
     float: left;
+    clear: both;
+}
+
+#download_speeds {
+    float: center;
 }
 
 table {
@@ -24,4 +29,13 @@ table {
 
 .critical {
     background-color: red;
+}
+
+#pings {
+    margin: auto;
+    display: block;
+}
+
+.svg-container {
+    margin: auto !important;
 }
