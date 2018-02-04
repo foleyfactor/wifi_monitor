@@ -8,8 +8,8 @@ from util import getPingInterval, getDownloadInterval
 def main():
     lastRunDownload = time() - 10000
     lastRunPing = time() - 10000
-    pingInterval = getPingInterval() * 1000
-    downloadInterval = getDownloadInterval() * 1000
+    pingInterval = getPingInterval()
+    downloadInterval = getDownloadInterval()
     while True:
         pull()
 
