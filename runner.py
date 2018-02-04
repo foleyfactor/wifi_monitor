@@ -14,7 +14,7 @@ def main():
         pull()
 
         needUpload = False
-        if time() - lastRunDownload >= runInterval:
+        if time() - lastRunDownload >= downloadInterval:
             print("Performing Download Test")
             currSpeed = getCurrentDownloadSpeed()
             needUpload = True
