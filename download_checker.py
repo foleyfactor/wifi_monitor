@@ -27,7 +27,7 @@ def getCurrentDownloadSpeed():
         seconds = parseTimeToSeconds(time)
         downloadSpeed = (fileSize/seconds)*8*magicRatio
 
-        if (downloadSpeed > 150) return # this is clearly an error
+        if (downloadSpeed > 150): return # this is clearly an error
 
         cleanup()
         writeSpeedResult(downloadSpeed)
