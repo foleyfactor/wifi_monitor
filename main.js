@@ -17,30 +17,7 @@ function padZero(n) {
     return (n < 10 && n >= 0 ? "0" : "") + n;
 }
 
-let warnDownloadSpeed = 5;
-let criticalDownloadSpeed = 2;
-let warnPing = "Down";
-let criticalPing = "Down";
-
-let downloadPlotLayout = {
-    title: 'Download Speeds',
-    xaxis: {
-        title: 'Time',
-    },
-    yaxis: {
-        title: 'Download Speed (Mb/s)',
-    },
-};
-
-let pingLayout = {
-    title: 'Connection Status',
-    annotations: [{
-        showarrow: false,
-        text: '',
-    }],
-};
-
-$(document).ready(() => {
+function loadAndRenderContent() {
     $el_speed = $('#speed_data_body');
     $el_ping = $('#ping_data_body');
     $el_downtimes = $('#downtime-body');
@@ -106,29 +83,9 @@ $(document).ready(() => {
     let downKeys = [];
     for (el of downtimes) downKeys.push(parseInt(el[0]));
     downKeys.sort((a,b) => { return b-a; });
+    $el_downtimes.empty();
     for (key of downKeys) {
         if (loadedJSON['downtimes'][key + ''] <= cutoff) continue;
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
-        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
         $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
     }
 
@@ -145,9 +102,39 @@ $(document).ready(() => {
     };
 
 
+    Plotly.purge('download_speeds');
+    Plotly.purge('pings');
     Plotly.newPlot('download_speeds', [plotMe], downloadPlotLayout);
     Plotly.newPlot('pings', [pingPlot], pingLayout);
+}
 
+
+let warnDownloadSpeed = 5;
+let criticalDownloadSpeed = 2;
+let warnPing = "Down";
+let criticalPing = "Down";
+
+let downloadPlotLayout = {
+    title: 'Download Speeds',
+    xaxis: {
+        title: 'Time',
+    },
+    yaxis: {
+        title: 'Download Speed (Mb/s)',
+    },
+};
+
+let pingLayout = {
+    title: 'Connection Status',
+    annotations: [{
+        showarrow: false,
+        text: '',
+    }],
+};
+
+$(document).ready(() => {
+    loadAndRenderContent();
+    setInterval(loadAndRenderContent, 60000);
 });
 
 window.onresize = function () {
