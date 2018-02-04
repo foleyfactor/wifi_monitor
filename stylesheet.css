@@ -1,4 +1,4 @@
-@media only screen and (min-width: 501px) {
+@media only screen and (min-width: 911px) {
     * {
         font-family: Ubuntu, sans-serif;
     }
@@ -130,7 +130,7 @@
     }
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 910px) {
 
     body {
         height: 100%;
