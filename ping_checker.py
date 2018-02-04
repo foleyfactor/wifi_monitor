@@ -1,5 +1,5 @@
-import requests
-from file_writer import writePingResult
+import requests, time
+from file_writer import writePingResult, writeDowntimeResult
 from twilio_alert import alert
 from git_commit import upload
 
@@ -12,17 +12,22 @@ def checkWifiStatus():
     try:
         r = requests.get(testUrl)
     except:
-        writePingResult(failValue)
-        checkForAlert(failValue)
-        return False
-    writePingResult(successValue)
-    checkForAlert(successValue)
-    return True
+        return checkUntilDowntimeEnd(int(time.time()))
+    writePingResult()
 
-def checkForAlert(val):
+def checkUntilDowntimeEnd(start_time):
+    try:
+        writePingResult(successValue)
+    except:
+        time.sleep(60)
+        return checkUntilDowntimeEnd(start_time)
+    writeDowntimeResult(start_time, int(time.time()))
+    sendDowntimeAlert()
+    writePingResult()
+
+def sendDowntimeAlert():
     if val == failValue:
-        return alert("Critical: wifi is currently down.")
+        return alert("Critical: wifi was just down. System is now up.\nSee details at: foleyfactor.github.io/wifi_monitor.")
 
 if __name__ == '__main__':
     checkWifiStatus()
-    upload()

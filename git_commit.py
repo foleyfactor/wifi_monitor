@@ -1,6 +1,16 @@
 import subprocess, os
 from util import getUser
 
+def pull():
+    try:
+        os.chdir('/home/' + getUser() + '/wifi_monitor')
+        subprocess.run(['git', 'fetch'])
+        subprocess.run(['git', 'rebase', 'origin/master'])
+    except:
+        # well rip
+        pass
+
+
 def upload():
     try:
         os.chdir('/home/' + getUser() + '/wifi_monitor')

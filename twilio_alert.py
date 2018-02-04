@@ -53,8 +53,7 @@ def alert_one(text, number):
                 from_=myPhoneNumber,
                 body=text)
     except:
-        sleep(30)
-        alert_one(text, number)
+        pass # eventually someone will get notified
 
 def isLocked():
     os.chdir('/home/' + getUser() + '/wifi_monitor')

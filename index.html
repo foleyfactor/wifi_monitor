@@ -4,8 +4,24 @@
      <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
+    <h1 id="announce"></h1>
     <div id="download_speeds"></div>
-    <div id="pings"></div>
+    <div id="second-row">
+        <div id="pings"></div>
+        <div id="downtimes">
+            <div class="downtime-title"><h1>Recent Downtimes</h1></div>
+            <div class="tr">
+                <div id="start-time" class="th"><h4>Start Time</h3></div>
+                <div id="end-time" class="th"><h4>End Time</h3></div>
+            </div>
+            <div id="downtimes-scroll">
+                <table id="downtimes-table">
+                    <tbody id="downtime-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <!--<table id="speed_table">
         <thead>
             <th>Time</th>

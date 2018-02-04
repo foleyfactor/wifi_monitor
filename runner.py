@@ -1,20 +1,28 @@
 from download_checker import getCurrentDownloadSpeed
 from ping_checker import checkWifiStatus
-from git_commit import upload
+from git_commit import upload, pull
 from time import sleep
 from datetime import datetime
+from util import getPingInterval, getDownloadInterval
 
 def main():
-    count = 0
+    lastRunDownload = time.time() - 10000
+    lastRunPing = time.time() - 10000
+    pingInterval = getPingInterval() * 1000
+    downloadInterval = getDownloadInterval() * 1000
     while True:
-        if count == 0:
+        pull()
+
+        needUpload = False
+        if time.time() - lastRunDownload >= runInterval:
             currSpeed = getCurrentDownloadSpeed()
-            print("Current download speed is: " + str(currSpeed) + "!")
-        res = checkWifiStatus()
-        print("Hooray! The Wifi is up!" if res else "Boo! Hiss! No Wifi. :(")
-        upload()
-        sleep(300)
-        count = (count + 1) % 12
+            needUpload = True
+        if time.time() - lastRunDownload >= pingInterval:
+            res = checkWifiStatus()
+            needUpload = True
+        if needUpload: upload()
+
+        sleep(30)
 
 if __name__ == '__main__':
     main()

@@ -1,6 +1,6 @@
 function getDataRow(first, second, warn, critical) {
     let cls = second <= warn ? (second <= critical ? 'critical' : 'warn') : 'ok'
-    return '<tr class="' + cls + '"><td class="left">' + first + '</td><td class="right">' + second + '</td></tr>';
+    return '<tr class="' + cls + ' table-row"><td class="left">' + first + '</td><td class="right">' + second + '</td></tr>';
 }
 
 function prettifyDate(d) {
@@ -43,6 +43,7 @@ let pingLayout = {
 $(document).ready(() => {
     $el_speed = $('#speed_data_body');
     $el_ping = $('#ping_data_body');
+    $el_downtimes = $('#downtime-body');
 
     let cutoff = parseInt(((new Date()).getTime() - 24*60*60*1000) / 1000);
 
@@ -52,21 +53,33 @@ $(document).ready(() => {
     x.send();
     let loadedJSON = JSON.parse(x.responseText);
 
+    console.log('here');
+
+    let y = new XMLHttpRequest();
+    y.overrideMimeType('application/json');
+    y.open('GET', 'interval.json?' + (new Date()).getTime(), false);
+    y.send();
+    let intervals = JSON.parse(y.responseText);
+    console.log(intervals);
+
     let plotMe = {
         x: [],
         y: [],
         type: 'scatter'
     };
 
+    // Used to have a list of pings, now we only have the most recent
+
     let speedtimes = [];
-    let pingtimes = [];
+    let downtimes = [];
+
     for (key in loadedJSON['speeds']) speedtimes.push(parseInt(key));
-    for (key in loadedJSON['pings']) pingtimes.push(parseInt(key));
+    for (key in loadedJSON['downtimes'])
+        downtimes.push([parseInt(key), loadedJSON['downtimes'][key]])
     speedtimes.sort((a,b) => { return b-a; });
-    pingtimes.sort((a,b) => { return b-a; });
     for (el of speedtimes) {
         if (el <= cutoff) continue;
-        $el_speed.append(getDataRow(prettifyDate(el), loadedJSON['speeds'][el + ''], warnDownloadSpeed, criticalDownloadSpeed));
+        // $el_speed.append(getDataRow(prettifyDate(el), loadedJSON['speeds'][el + ''], warnDownloadSpeed, criticalDownloadSpeed));
         let time = new Date(el*1000);
         let strTime = time.getFullYear() + "-" + padZero(time.getMonth() + 1)  + "-" + padZero(time.getDate())+ " " + padZero(time.getHours()) + ":" + padZero(time.getMinutes())+ ":" + padZero(time.getSeconds());
 
@@ -74,18 +87,54 @@ $(document).ready(() => {
         plotMe.y.push(loadedJSON['speeds'][el + '']);
     }
 
-    let pass = 0;
-    let fail = 0;
+    mostRecent = loadedJSON['pings']['most_recent'] * 1000;
 
-    for (el of pingtimes) {
-        if (el <= cutoff) continue;
-        $el_ping.append(getDataRow(prettifyDate(el), loadedJSON['pings'][el + ''] == 1 ? "Up" : "Down", warnPing, criticalPing));
-        if (loadedJSON['pings'][el + '']) ++pass;
-        else ++fail;
+    console.log((new Date()).getTime() - mostRecent, (intervals['pings'] + 60) * 1000);
+
+    if ((new Date()).getTime() - mostRecent > (intervals['pings'] + 60) * 1000) {
+        $('#announce').text('The WiFi is (probably) currently down.');
     }
 
+    let totalDowntime = 0;
+    for (el of downtimes) {
+        if (el[1] <= cutoff) continue;
+        let start = Math.max(el[0], cutoff);
+        totalDowntime += el[1] - start;
+    }
+    let totalUptime = 24 * 60 * 60 - totalDowntime;
+
+    let downKeys = [];
+    for (el of downtimes) downKeys.push(parseInt(el[0]));
+    downKeys.sort((a,b) => { return b-a; });
+    for (key of downKeys) {
+        if (loadedJSON['downtimes'][key + ''] <= cutoff) continue;
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+        $el_downtimes.append(getDataRow(prettifyDate(key), prettifyDate(loadedJSON['downtimes'][key + '']), -1, -1));
+    }
+
+
     let pingPlot = {
-        values: [pass, fail],
+        values: [totalUptime, totalDowntime],
         labels: ["Up", "Down"],
         hoverinfo: 'label+percent',
         hole: 0.7,
