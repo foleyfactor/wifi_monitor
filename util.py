@@ -17,12 +17,12 @@ def getPingInterval():
     return pings
 
 def getDownloadInterval():
-    if downloads is None:
+    if download is None:
         loadAllIntervals()
-    return downloads
+    return download
 
 def loadAllIntervals():
-    global pings, downloads
+    global pings, download
     with open('/home/' + getUser() + '/wifi_monitor/interval.json') as f:
         d = eval(''.join([i.strip() for i in f.readlines()]))
         pings = d['pings']
