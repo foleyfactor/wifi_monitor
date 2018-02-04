@@ -18,10 +18,12 @@ def main():
             print("Performing Download Test")
             currSpeed = getCurrentDownloadSpeed()
             needUpload = True
+            lastRunDownload = time()
         if time() - lastRunDownload >= pingInterval:
             print("Performing Connection Test")
             res = checkWifiStatus()
             needUpload = True
+            lastRunPing = time()
         if needUpload: upload()
 
         sleep(30)
