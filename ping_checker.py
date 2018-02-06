@@ -17,7 +17,7 @@ def checkWifiStatus():
 
 def checkUntilDowntimeEnd(start_time):
     try:
-        writePingResult(successValue)
+        r = requests.get(testUrl)
     except:
         time.sleep(60)
         return checkUntilDowntimeEnd(start_time)
@@ -26,8 +26,7 @@ def checkUntilDowntimeEnd(start_time):
     writePingResult()
 
 def sendDowntimeAlert():
-    if val == failValue:
-        return alert("Critical: wifi was just down. System is now up.\nSee details at: foleyfactor.github.io/wifi_monitor.")
+    return alert("Critical: wifi was just down. System is now up.\nSee details at: foleyfactor.github.io/wifi_monitor.")
 
 if __name__ == '__main__':
     checkWifiStatus()
